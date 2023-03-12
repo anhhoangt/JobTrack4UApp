@@ -9,7 +9,7 @@
 The ultimate tool for job seekers to keep track of their job applications! Jobtrack4U is a user-friendly website designed to help job seekers organize and manage their job search in a simple and efficient way.
 
 
-View this project live [HERE](https://camp-mern.web.app/)
+View this project live [HERE](https://jobtrack4u.onrender.com/landing)
 ## Usage
 * You can keeo track your job application when your log in into our app
 * User needs to create an account or sign in to to keep track their job applications.
