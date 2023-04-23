@@ -30,16 +30,7 @@ const register = async (req, res) => {
 
 `,
   };
-  sendgrid
-    .send(msg)
-    .then((response) => {
-      console.log(response[0].statusCode);
-      console.log(response[0].headers);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
+  sendgrid.send(msg);
   res.status(StatusCodes.CREATED).json({
     user: {
       email: user.email,
