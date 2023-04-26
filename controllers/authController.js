@@ -38,7 +38,7 @@ const register = async (req, res) => {
       console.log(response[0].headers);
     })
     .catch((error) => {
-      console.error(error);
+      console.error(error.body);
     });
   res.status(StatusCodes.CREATED).json({
     user: {
