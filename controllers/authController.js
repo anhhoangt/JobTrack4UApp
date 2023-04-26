@@ -34,11 +34,15 @@ const register = async (req, res) => {
   sendgrid
     .send(msg)
     .then((response) => {
+      console.log("success");
       console.log(response[0].statusCode);
       console.log(response[0].headers);
     })
     .catch((error) => {
-      console.error(error.body);
+      console.log("error");
+      console.error(error);
+      console.log("error.response.body");
+      console.log(error.response.body);
     });
   res.status(StatusCodes.CREATED).json({
     user: {
