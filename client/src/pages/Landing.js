@@ -43,24 +43,24 @@ const Landing = () => {
             <img src={searchengine} alt="Purpose" className="img searchEngine-img" />  
             <div>        
             <h4>Responsive Search Engine</h4>
-            <h5>
+            <p>
             User can search for jobs by keywords, status, and job type by a responsive search engine.
-            </h5>  
+            </p>  
             </div>            
           </div>
           <div className="barchart">
             <div>
               <h4>Dynamic Charts</h4>
-              <h5>
+              <p>
               User can also see how many jobs they apply in the last 6 active months with dynamic barchart.
-              </h5>
+              </p>
             </div>            
             <img src={barchart} alt="Purpose" className="img barchart-img" />            
           </div>
           <div className="areachart">            
             <img src={areachart} alt="Purpose" className="img areachart-img" />
             <div>
-              <h5>Or areachart.</h5>
+              <p>Or areachart.</p>
             </div>
           </div>
         </div>

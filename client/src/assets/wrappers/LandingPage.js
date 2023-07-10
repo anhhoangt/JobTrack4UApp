@@ -73,7 +73,7 @@ const Wrapper = styled.main`
       font-size: 2rem;
     }
 
-    h5{
+    p{
       font-weight: 50;
       font-size: 1rem;
     }
