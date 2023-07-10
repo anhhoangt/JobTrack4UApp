@@ -23,7 +23,7 @@ const register = async (req, res) => {
   const msg = {
     to: email,
     from: process.env.SENDGRID_SENDER,
-    subject: "Welcome to Jobify, thanks for choosing us",
+    subject: "Welcome to Jobtrack4U, thanks for choosing us",
     text: "your account need to be verified",
     html: `
     <p> This is email confirm your account on our website has been activated. Hope you have a wonderful experience with us</p>
