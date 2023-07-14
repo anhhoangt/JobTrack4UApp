@@ -61,6 +61,15 @@ const Wrapper = styled.main`
       grid-column-gap: 5rem;
     }
 
+    .confirmEmail {
+      padding-top: 1rem;
+      padding-bottom: 5rem;
+      padding-left: 5rem;
+      padding-right: 5rem;
+      display: flex;
+      grid-column-gap: 5rem;
+    }
+
     h2 {
       text-align: center;
       margin-bottom: 2rem;
@@ -87,6 +96,10 @@ const Wrapper = styled.main`
       height: 150%;
     }
     .areachart-img {
+      max-width: 60%;
+      height: 150%;
+    }
+    .confirmEmail-img {
       max-width: 60%;
       height: 150%;
     }

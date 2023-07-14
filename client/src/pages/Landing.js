@@ -2,6 +2,7 @@ import main from "../assets/images/main-alternative.svg";
 import barchart from "../assets/images/barchart.PNG";
 import searchengine from "../assets/images/searchengine.PNG";
 import areachart from "../assets/images/areachart.PNG";
+import confirmEmail from "../assets/images/confirmEmail.PNG";
 import Wrapper from "../assets/wrappers/LandingPage";
 import { Logo } from "../components";
 import { Link } from "react-router-dom";
@@ -62,6 +63,15 @@ const Landing = () => {
             <div>
               <p>Or areachart.</p>
             </div>
+          </div>
+          <div className="confirmEmail">
+            <div>
+              <h4>Email Confirmation</h4>
+              <p>
+              An email will be sent when user create a new account on my platform
+              </p>
+            </div>            
+            <img src={confirmEmail} alt="Purpose" className="img confirmEmail-img" />            
           </div>
         </div>
       </Wrapper>
