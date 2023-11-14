@@ -36,3 +36,5 @@ The project is created with:
 * Create job application
 * Edit/remove job application
 * Visualize how many jobs that applied in the last 6 months by barchart and area chart
+
+...
