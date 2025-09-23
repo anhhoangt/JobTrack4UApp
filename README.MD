@@ -5,7 +5,7 @@
 * [Features](#Features)
 
 
-## Jobtrack4U......
+## Jobtrack4U.......
 The ultimate tool for job seekers to keep track of their job applications! Jobtrack4U is a user-friendly website designed to help job seekers organize and manage their job search in a simple and efficient way.
 
 
