@@ -19,7 +19,7 @@ const createJob = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ job });
 };
 const getAllJobs = async (req, res) => {
-  const { status, jobType, sort, search } = req.query;
+  const { status, jobType, sort, search, category, priority } = req.query;
 
   const queryObject = {
     createdBy: req.user.userId,
@@ -34,6 +34,13 @@ const getAllJobs = async (req, res) => {
   }
   if (search) {
     queryObject.position = { $regex: search, $options: 'i' };
+  }
+  // Phase 2: Category and Priority filters
+  if (category && category !== 'all') {
+    queryObject.category = category;
+  }
+  if (priority && priority !== 'all') {
+    queryObject.priority = priority;
   }
   // NO AWAIT
 

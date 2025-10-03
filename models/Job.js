@@ -71,6 +71,34 @@ const JobSchema = new mongoose.Schema(
       type: String,
       maxlength: 500,
     },
+    // Phase 2: Categories & Tags
+    category: {
+      type: String,
+      enum: [
+        'software-engineering',
+        'data-science',
+        'product-management',
+        'design',
+        'marketing',
+        'sales',
+        'operations',
+        'finance',
+        'hr',
+        'consulting',
+        'other'
+      ],
+      default: 'other',
+    },
+    tags: [{
+      type: String,
+      maxlength: 30,
+      trim: true,
+    }],
+    priority: {
+      type: String,
+      enum: ['low', 'medium', 'high'],
+      default: 'medium',
+    },
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: 'User',

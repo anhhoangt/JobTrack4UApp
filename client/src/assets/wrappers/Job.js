@@ -117,6 +117,58 @@ const Wrapper = styled.article`
     color: var(--red-dark);
     font-weight: 600;
   }
+
+  .priority-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .priority-high {
+    background: var(--red-light);
+    color: var(--red-dark);
+  }
+
+  .priority-low {
+    background: var(--grey-100);
+    color: var(--grey-600);
+  }
+
+  .tags-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+    flex-wrap: wrap;
+  }
+
+  .tag-icon {
+    color: var(--primary-500);
+    font-size: 0.8rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .tag {
+    background: var(--primary-100);
+    color: var(--primary-700);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    border: 1px solid var(--primary-200);
+  }
 `
 
 export default Wrapper

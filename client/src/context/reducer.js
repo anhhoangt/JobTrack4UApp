@@ -137,6 +137,10 @@ const reducer = (state, action) => {
       jobPostingUrl: '',
       applicationMethod: 'website',
       notes: '',
+      // Phase 2 fields
+      category: 'other',
+      tags: '',
+      priority: 'medium',
     };
 
     return {
@@ -194,7 +198,10 @@ const reducer = (state, action) => {
       companyWebsite,
       jobPostingUrl,
       applicationMethod,
-      notes
+      notes,
+      category,
+      tags,
+      priority
     } = job;
 
     // Format dates for input fields
@@ -223,6 +230,10 @@ const reducer = (state, action) => {
       jobPostingUrl: jobPostingUrl || '',
       applicationMethod: applicationMethod || 'website',
       notes: notes || '',
+      // Phase 2 fields
+      category: category || 'other',
+      tags: Array.isArray(tags) ? tags.join(', ') : '',
+      priority: priority || 'medium',
     };
   }
   if (action.type === DELETE_JOB_BEGIN) {

@@ -64,6 +64,24 @@ const initialState = {
   applicationMethod: 'website',
   applicationMethodOptions: ['email', 'website', 'linkedin', 'recruiter', 'other'],
   notes: '',
+  // Phase 2: Categories & Tags
+  category: 'other',
+  categoryOptions: [
+    'software-engineering',
+    'data-science',
+    'product-management',
+    'design',
+    'marketing',
+    'sales',
+    'operations',
+    'finance',
+    'hr',
+    'consulting',
+    'other'
+  ],
+  tags: '',
+  priority: 'medium',
+  priorityOptions: ['low', 'medium', 'high'],
   jobs: [],
   totalJobs: 0,
   numOfPages: 1,
@@ -75,6 +93,9 @@ const initialState = {
   searchType: 'all',
   sort: 'latest',
   sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+  // Phase 2: Search filters
+  searchCategory: 'all',
+  searchPriority: 'all',
 };
 
 const AppContext = React.createContext();
@@ -188,8 +209,15 @@ const AppProvider = ({ children }) => {
         companyWebsite,
         jobPostingUrl,
         applicationMethod,
-        notes
+        notes,
+        category,
+        tags,
+        priority
       } = state;
+
+      // Process tags string into array
+      const tagsArray = tags ? tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
+
       await authFetch.post('/jobs', {
         position,
         company,
@@ -207,7 +235,10 @@ const AppProvider = ({ children }) => {
         companyWebsite,
         jobPostingUrl,
         applicationMethod,
-        notes
+        notes,
+        category,
+        tags: tagsArray,
+        priority
       });
       dispatch({ type: CREATE_JOB_SUCCESS });
       dispatch({ type: CLEAR_VALUES });
@@ -222,11 +253,17 @@ const AppProvider = ({ children }) => {
   };
 
   const getJobs = async () => {
-    const { page, search, searchStatus, searchType, sort } = state;
+    const { page, search, searchStatus, searchType, sort, searchCategory, searchPriority } = state;
 
     let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
     if (search) {
       url = url + `&search=${search}`;
+    }
+    if (searchCategory && searchCategory !== 'all') {
+      url = url + `&category=${searchCategory}`;
+    }
+    if (searchPriority && searchPriority !== 'all') {
+      url = url + `&priority=${searchPriority}`;
     }
     dispatch({ type: GET_JOBS_BEGIN });
     try {
@@ -268,8 +305,15 @@ const AppProvider = ({ children }) => {
         companyWebsite,
         jobPostingUrl,
         applicationMethod,
-        notes
+        notes,
+        category,
+        tags,
+        priority
       } = state;
+
+      // Process tags string into array
+      const tagsArray = tags ? tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
+
       await authFetch.patch(`/jobs/${state.editJobId}`, {
         company,
         position,
@@ -287,7 +331,10 @@ const AppProvider = ({ children }) => {
         companyWebsite,
         jobPostingUrl,
         applicationMethod,
-        notes
+        notes,
+        category,
+        tags: tagsArray,
+        priority
       });
       dispatch({ type: EDIT_JOB_SUCCESS });
       dispatch({ type: CLEAR_VALUES });

@@ -31,6 +31,12 @@ const AddJob = () => {
     applicationMethod,
     applicationMethodOptions,
     notes,
+    // Phase 2 fields
+    category,
+    categoryOptions,
+    tags,
+    priority,
+    priorityOptions,
   } = useAppContext()
 
   const handleSubmit = (e) => {
@@ -189,6 +195,32 @@ const AddJob = () => {
               maxLength='500'
             />
           </div>
+
+          {/* Phase 2 Fields */}
+          {/* category */}
+          <FormRowSelect
+            name='category'
+            labelText='job category'
+            value={category}
+            handleChange={handleJobInput}
+            list={categoryOptions}
+          />
+          {/* tags */}
+          <FormRow
+            type='text'
+            labelText='tags (comma separated)'
+            name='tags'
+            value={tags}
+            handleChange={handleJobInput}
+          />
+          {/* priority */}
+          <FormRowSelect
+            name='priority'
+            labelText='priority'
+            value={priority}
+            handleChange={handleJobInput}
+            list={priorityOptions}
+          />
 
           {/* btn container */}
           <div className='btn-container'>

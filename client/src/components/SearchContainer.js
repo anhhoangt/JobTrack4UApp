@@ -6,7 +6,6 @@ const SearchContainer = () => {
   const [localSearch, setLocalSearch] = useState("");
   const {
     isLoading,
-    search,
     searchStatus,
     searchType,
     sort,
@@ -15,6 +14,11 @@ const SearchContainer = () => {
     clearFilters,
     jobTypeOptions,
     statusOptions,
+    // Phase 2: Category and Priority search
+    searchCategory,
+    searchPriority,
+    categoryOptions,
+    priorityOptions,
   } = useAppContext();
   const handleSearch = (e) => {
     handleChange({ name: e.target.name, value: e.target.value });
@@ -63,6 +67,22 @@ const SearchContainer = () => {
             value={searchType}
             handleChange={handleSearch}
             list={["all", ...jobTypeOptions]}
+          />
+          {/* Phase 2: search by category */}
+          <FormRowSelect
+            labelText="category"
+            name="searchCategory"
+            value={searchCategory}
+            handleChange={handleSearch}
+            list={["all", ...categoryOptions]}
+          />
+          {/* Phase 2: search by priority */}
+          <FormRowSelect
+            labelText="priority"
+            name="searchPriority"
+            value={searchPriority}
+            handleChange={handleSearch}
+            list={["all", ...priorityOptions]}
           />
           {/* sort */}
           <FormRowSelect

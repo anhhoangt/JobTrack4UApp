@@ -6,7 +6,10 @@ import {
   FaDollarSign,
   FaExternalLinkAlt,
   FaClock,
-  FaStickyNote
+  FaStickyNote,
+  FaTag,
+  FaFolderOpen,
+  FaFlag
 } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useAppContext } from '../context/appContext'
@@ -25,6 +28,9 @@ const Job = ({
   applicationDeadline,
   jobPostingUrl,
   notes,
+  category,
+  tags,
+  priority,
 }) => {
   const { setEditJob, deleteJob } = useAppContext()
 
@@ -54,6 +60,14 @@ const Job = ({
     }
   }
 
+  // Format category
+  const formatCategory = (cat) => {
+    if (!cat) return '';
+    return cat.split('-').map(word =>
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+  };
+
   return (
     <Wrapper>
       <header>
@@ -61,6 +75,12 @@ const Job = ({
         <div className='info'>
           <h5>{position}</h5>
           <p>{company}</p>
+          {/* Priority indicator */}
+          {priority && priority !== 'medium' && (
+            <div className={`priority-badge priority-${priority}`}>
+              <FaFlag /> {priority.toUpperCase()}
+            </div>
+          )}
         </div>
       </header>
       <div className='content'>
@@ -68,6 +88,14 @@ const Job = ({
           <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
           <JobInfo icon={<FaCalendarAlt />} text={date} />
           <JobInfo icon={<FaBriefcase />} text={jobType} />
+
+          {/* Phase 2: Category */}
+          {category && category !== 'other' && (
+            <JobInfo
+              icon={<FaFolderOpen />}
+              text={formatCategory(category)}
+            />
+          )}
 
           {/* Enhanced fields */}
           {salaryText && (
@@ -77,6 +105,7 @@ const Job = ({
             <JobInfo
               icon={<FaClock />}
               text={`Deadline: ${deadlineText}`}
+              className={isOverdue ? 'overdue' : ''}
             />
           )}
           {jobPostingUrl && (
@@ -99,6 +128,20 @@ const Job = ({
               icon={<FaStickyNote />}
               text={`Notes: ${notes.length > 50 ? notes.substring(0, 50) + '...' : notes}`}
             />
+          )}
+
+          {/* Phase 2: Tags */}
+          {tags && tags.length > 0 && (
+            <div className='tags-container'>
+              <FaTag className='tag-icon' />
+              <div className='tags'>
+                {tags.map((tag, index) => (
+                  <span key={index} className='tag'>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
           )}
 
           <div className={`status ${status}`}>{status}</div>
