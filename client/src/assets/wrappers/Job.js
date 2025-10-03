@@ -100,6 +100,23 @@ const Wrapper = styled.article`
   &:hover .actions {
     visibility: visible;
   }
+
+  .job-link {
+    color: var(--primary-500);
+    font-weight: 500;
+    text-decoration: none;
+    transition: var(--transition);
+
+    &:hover {
+      color: var(--primary-700);
+      text-decoration: underline;
+    }
+  }
+
+  .overdue {
+    color: var(--red-dark);
+    font-weight: 600;
+  }
 `
 
 export default Wrapper
