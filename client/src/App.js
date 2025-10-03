@@ -8,8 +8,11 @@ import { Register, Landing, Error, ProtectedRoute } from './pages'
 import {
   AllJobs,      // Job listing and management page
   Profile,      // User profile and settings page
+  SharedLayout, // Common layout for all dashboard pages
   Stats,        // Analytics and statistics dashboard
   AddJob,       // Job creation and editing form
+  Activities,   // Activity management page (Phase 3)
+  Timeline,     // Timeline view page (Phase 3)
 } from './pages/dashboard'
 
 /**
@@ -92,6 +95,26 @@ function App() {
             - Rich text areas for job description and personal notes
           */}
           <Route path='add-job' element={<AddJob />} />
+
+          {/*
+            ACTIVITIES PAGE (/activities) - Phase 3
+            Activity management interface with:
+            - List of all activities across jobs
+            - Filter by activity type and completion status
+            - Mark activities as complete
+            - Create, edit, and delete activities
+          */}
+          <Route path='activities' element={<Activities />} />
+
+          {/*
+            TIMELINE PAGE (/timeline) - Phase 3
+            Chronological timeline view featuring:
+            - Visual timeline of all activities
+            - Filter by specific job or view all
+            - Activity type indicators and priority levels
+            - Upcoming activity highlights
+          */}
+          <Route path='timeline' element={<Timeline />} />
 
           {/*
             USER PROFILE PAGE (/profile)

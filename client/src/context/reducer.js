@@ -28,6 +28,36 @@ import {
   CHANGE_PAGE,
   GET_CURRENT_USER_BEGIN,
   GET_CURRENT_USER_SUCCESS,
+  // Phase 3: Activity Actions
+  GET_ACTIVITIES_BEGIN,
+  GET_ACTIVITIES_SUCCESS,
+  GET_ACTIVITIES_ERROR,
+  CREATE_ACTIVITY_BEGIN,
+  CREATE_ACTIVITY_SUCCESS,
+  CREATE_ACTIVITY_ERROR,
+  UPDATE_ACTIVITY_BEGIN,
+  UPDATE_ACTIVITY_SUCCESS,
+  UPDATE_ACTIVITY_ERROR,
+  DELETE_ACTIVITY_BEGIN,
+  DELETE_ACTIVITY_SUCCESS,
+  DELETE_ACTIVITY_ERROR,
+  MARK_ACTIVITY_COMPLETE_BEGIN,
+  MARK_ACTIVITY_COMPLETE_SUCCESS,
+  MARK_ACTIVITY_COMPLETE_ERROR,
+  GET_TIMELINE_ACTIVITIES_BEGIN,
+  GET_TIMELINE_ACTIVITIES_SUCCESS,
+  GET_TIMELINE_ACTIVITIES_ERROR,
+  HANDLE_ACTIVITY_CHANGE,
+  CLEAR_ACTIVITY_FILTERS,
+  SET_SELECTED_JOB_FOR_TIMELINE,
+  CHANGE_ACTIVITY_PAGE,
+  // Enhanced Activity Actions
+  SET_EDIT_ACTIVITY,
+  CLEAR_ACTIVITY_VALUES,
+  SEARCH_ACTIVITIES_BEGIN,
+  SEARCH_ACTIVITIES_SUCCESS,
+  GET_ACTIVITY_DETAILS_BEGIN,
+  GET_ACTIVITY_DETAILS_SUCCESS,
 } from './actions';
 
 import { initialState } from './appContext';
@@ -311,6 +341,254 @@ const reducer = (state, action) => {
       jobLocation: action.payload.location,
     };
   }
+
+  // ======== PHASE 3: ACTIVITY MANAGEMENT REDUCERS ========
+
+  if (action.type === GET_ACTIVITIES_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_ACTIVITIES_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      activities: action.payload.activities,
+      totalActivities: action.payload.totalActivities,
+      activitiesNumOfPages: action.payload.activitiesNumOfPages,
+    };
+  }
+  if (action.type === GET_ACTIVITIES_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === CREATE_ACTIVITY_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === CREATE_ACTIVITY_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'Activity Created Successfully!',
+    };
+  }
+  if (action.type === CREATE_ACTIVITY_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === UPDATE_ACTIVITY_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === UPDATE_ACTIVITY_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'Activity Updated Successfully!',
+    };
+  }
+  if (action.type === UPDATE_ACTIVITY_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === DELETE_ACTIVITY_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === DELETE_ACTIVITY_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'Activity Deleted Successfully!',
+    };
+  }
+  if (action.type === DELETE_ACTIVITY_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === MARK_ACTIVITY_COMPLETE_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === MARK_ACTIVITY_COMPLETE_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'Activity Marked as Complete!',
+    };
+  }
+  if (action.type === MARK_ACTIVITY_COMPLETE_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === GET_TIMELINE_ACTIVITIES_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_TIMELINE_ACTIVITIES_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      timelineActivities: action.payload.timelineActivities,
+    };
+  }
+  if (action.type === GET_TIMELINE_ACTIVITIES_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === HANDLE_ACTIVITY_CHANGE) {
+    return {
+      ...state,
+      activitiesPage: 1, // Reset to first page when filters change
+      [action.payload.name]: action.payload.value,
+    };
+  }
+
+  if (action.type === CLEAR_ACTIVITY_FILTERS) {
+    return {
+      ...state,
+      activityType: 'all',
+      activityStatus: 'all',
+      activitiesPage: 1,
+    };
+  }
+
+  if (action.type === SET_SELECTED_JOB_FOR_TIMELINE) {
+    return {
+      ...state,
+      selectedJobForTimeline: action.payload.jobId,
+    };
+  }
+
+  if (action.type === CHANGE_ACTIVITY_PAGE) {
+    return {
+      ...state,
+      activitiesPage: action.payload.page,
+    };
+  }
+
+  // ======== ENHANCED ACTIVITY REDUCERS ========
+
+  if (action.type === SET_EDIT_ACTIVITY) {
+    const activity = state.activities.find((activity) => activity._id === action.payload.id);
+    const {
+      _id,
+      title,
+      type,
+      description,
+      jobId,
+      scheduledDate,
+      reminderDate,
+      priority,
+      contactPerson,
+    } = activity;
+
+    // Format dates for input fields
+    const formatDateTime = (date) => {
+      if (!date) return '';
+      return new Date(date).toISOString().slice(0, 16);
+    };
+
+    return {
+      ...state,
+      isEditingActivity: true,
+      editActivityId: _id,
+      activityTitle: title || '',
+      activityType: type || '',
+      activityDescription: description || '',
+      activityJobId: jobId._id || jobId || '',
+      activityScheduledDate: formatDateTime(scheduledDate),
+      activityReminderDate: formatDateTime(reminderDate),
+      activityPriority: priority || 'medium',
+      activityContactName: contactPerson?.name || '',
+      activityContactEmail: contactPerson?.email || '',
+      activityContactPhone: contactPerson?.phone || '',
+      activityContactRole: contactPerson?.role || '',
+    };
+  }
+
+  if (action.type === CLEAR_ACTIVITY_VALUES) {
+    return {
+      ...state,
+      isEditingActivity: false,
+      editActivityId: '',
+      activityTitle: '',
+      activityType: '',
+      activityDescription: '',
+      activityJobId: '',
+      activityScheduledDate: '',
+      activityReminderDate: '',
+      activityPriority: 'medium',
+      activityContactName: '',
+      activityContactEmail: '',
+      activityContactPhone: '',
+      activityContactRole: '',
+    };
+  }
+
+  if (action.type === SEARCH_ACTIVITIES_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === SEARCH_ACTIVITIES_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      activities: action.payload.activities,
+      totalActivities: action.payload.totalActivities,
+      activitiesNumOfPages: action.payload.activitiesNumOfPages,
+    };
+  }
+
+  if (action.type === GET_ACTIVITY_DETAILS_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === GET_ACTIVITY_DETAILS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+    };
+  }
+
   throw new Error(`no such action : ${action.type}`);
 };
 

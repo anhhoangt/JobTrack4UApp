@@ -261,7 +261,11 @@ ul {
   to {
     transform: rotate(360deg);
   }
+
 }
+
+/* ======== PHASE 3: ACTIVITY MANAGEMENT STYLES ======== */
+@import url('./activities.css');
 
 .loading {
   width: 6rem;
