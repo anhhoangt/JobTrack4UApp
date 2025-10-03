@@ -126,6 +126,17 @@ const reducer = (state, action) => {
       jobLocation: state.userLocation,
       jobType: 'full-time',
       status: 'pending',
+      // Enhanced fields
+      applicationDate: '',
+      applicationDeadline: '',
+      salaryMin: '',
+      salaryMax: '',
+      salaryCurrency: 'USD',
+      jobDescription: '',
+      companyWebsite: '',
+      jobPostingUrl: '',
+      applicationMethod: 'website',
+      notes: '',
     };
 
     return {
@@ -169,7 +180,29 @@ const reducer = (state, action) => {
   }
   if (action.type === SET_EDIT_JOB) {
     const job = state.jobs.find((job) => job._id === action.payload.id);
-    const { _id, position, company, jobLocation, jobType, status } = job;
+    const {
+      _id,
+      position,
+      company,
+      jobLocation,
+      jobType,
+      status,
+      applicationDate,
+      applicationDeadline,
+      salary,
+      jobDescription,
+      companyWebsite,
+      jobPostingUrl,
+      applicationMethod,
+      notes
+    } = job;
+
+    // Format dates for input fields
+    const formatDate = (date) => {
+      if (!date) return '';
+      return new Date(date).toISOString().split('T')[0];
+    };
+
     return {
       ...state,
       isEditing: true,
@@ -179,6 +212,17 @@ const reducer = (state, action) => {
       jobLocation,
       jobType,
       status,
+      // Enhanced fields
+      applicationDate: formatDate(applicationDate),
+      applicationDeadline: formatDate(applicationDeadline),
+      salaryMin: salary?.min || '',
+      salaryMax: salary?.max || '',
+      salaryCurrency: salary?.currency || 'USD',
+      jobDescription: jobDescription || '',
+      companyWebsite: companyWebsite || '',
+      jobPostingUrl: jobPostingUrl || '',
+      applicationMethod: applicationMethod || 'website',
+      notes: notes || '',
     };
   }
   if (action.type === DELETE_JOB_BEGIN) {

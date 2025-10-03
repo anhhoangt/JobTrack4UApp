@@ -52,6 +52,18 @@ const initialState = {
   jobType: 'full-time',
   statusOptions: ['interview', 'declined', 'pending'],
   status: 'pending',
+  // Enhanced fields for Phase 1
+  applicationDate: '',
+  applicationDeadline: '',
+  salaryMin: '',
+  salaryMax: '',
+  salaryCurrency: 'USD',
+  jobDescription: '',
+  companyWebsite: '',
+  jobPostingUrl: '',
+  applicationMethod: 'website',
+  applicationMethodOptions: ['email', 'website', 'linkedin', 'recruiter', 'other'],
+  notes: '',
   jobs: [],
   totalJobs: 0,
   numOfPages: 1,
@@ -161,13 +173,41 @@ const AppProvider = ({ children }) => {
   const createJob = async () => {
     dispatch({ type: CREATE_JOB_BEGIN });
     try {
-      const { position, company, jobLocation, jobType, status } = state;
+      const {
+        position,
+        company,
+        jobLocation,
+        jobType,
+        status,
+        applicationDate,
+        applicationDeadline,
+        salaryMin,
+        salaryMax,
+        salaryCurrency,
+        jobDescription,
+        companyWebsite,
+        jobPostingUrl,
+        applicationMethod,
+        notes
+      } = state;
       await authFetch.post('/jobs', {
         position,
         company,
         jobLocation,
         jobType,
         status,
+        applicationDate,
+        applicationDeadline,
+        salary: {
+          min: salaryMin,
+          max: salaryMax,
+          currency: salaryCurrency
+        },
+        jobDescription,
+        companyWebsite,
+        jobPostingUrl,
+        applicationMethod,
+        notes
       });
       dispatch({ type: CREATE_JOB_SUCCESS });
       dispatch({ type: CLEAR_VALUES });
@@ -213,13 +253,41 @@ const AppProvider = ({ children }) => {
     dispatch({ type: EDIT_JOB_BEGIN });
 
     try {
-      const { position, company, jobLocation, jobType, status } = state;
+      const {
+        position,
+        company,
+        jobLocation,
+        jobType,
+        status,
+        applicationDate,
+        applicationDeadline,
+        salaryMin,
+        salaryMax,
+        salaryCurrency,
+        jobDescription,
+        companyWebsite,
+        jobPostingUrl,
+        applicationMethod,
+        notes
+      } = state;
       await authFetch.patch(`/jobs/${state.editJobId}`, {
         company,
         position,
         jobLocation,
         jobType,
         status,
+        applicationDate,
+        applicationDeadline,
+        salary: {
+          min: salaryMin,
+          max: salaryMax,
+          currency: salaryCurrency
+        },
+        jobDescription,
+        companyWebsite,
+        jobPostingUrl,
+        applicationMethod,
+        notes
       });
       dispatch({ type: EDIT_JOB_SUCCESS });
       dispatch({ type: CLEAR_VALUES });

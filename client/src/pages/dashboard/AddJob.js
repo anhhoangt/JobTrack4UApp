@@ -19,6 +19,18 @@ const AddJob = () => {
     clearValues,
     createJob,
     editJob,
+    // Enhanced fields
+    applicationDate,
+    applicationDeadline,
+    salaryMin,
+    salaryMax,
+    salaryCurrency,
+    jobDescription,
+    companyWebsite,
+    jobPostingUrl,
+    applicationMethod,
+    applicationMethodOptions,
+    notes,
   } = useAppContext()
 
   const handleSubmit = (e) => {
@@ -83,6 +95,101 @@ const AddJob = () => {
             handleChange={handleJobInput}
             list={jobTypeOptions}
           />
+
+          {/* Enhanced Fields */}
+          {/* application date */}
+          <FormRow
+            type='date'
+            labelText='application date'
+            name='applicationDate'
+            value={applicationDate}
+            handleChange={handleJobInput}
+          />
+          {/* application deadline */}
+          <FormRow
+            type='date'
+            labelText='application deadline'
+            name='applicationDeadline'
+            value={applicationDeadline}
+            handleChange={handleJobInput}
+          />
+          {/* salary min */}
+          <FormRow
+            type='number'
+            labelText='salary min'
+            name='salaryMin'
+            value={salaryMin}
+            handleChange={handleJobInput}
+          />
+          {/* salary max */}
+          <FormRow
+            type='number'
+            labelText='salary max'
+            name='salaryMax'
+            value={salaryMax}
+            handleChange={handleJobInput}
+          />
+          {/* salary currency */}
+          <FormRowSelect
+            name='salaryCurrency'
+            labelText='currency'
+            value={salaryCurrency}
+            handleChange={handleJobInput}
+            list={['USD', 'EUR', 'GBP', 'CAD', 'AUD']}
+          />
+          {/* company website */}
+          <FormRow
+            type='url'
+            labelText='company website'
+            name='companyWebsite'
+            value={companyWebsite}
+            handleChange={handleJobInput}
+          />
+          {/* job posting url */}
+          <FormRow
+            type='url'
+            labelText='job posting URL'
+            name='jobPostingUrl'
+            value={jobPostingUrl}
+            handleChange={handleJobInput}
+          />
+          {/* application method */}
+          <FormRowSelect
+            name='applicationMethod'
+            labelText='application method'
+            value={applicationMethod}
+            handleChange={handleJobInput}
+            list={applicationMethodOptions}
+          />
+          {/* job description */}
+          <div className='form-row'>
+            <label htmlFor='jobDescription' className='form-label'>
+              job description
+            </label>
+            <textarea
+              name='jobDescription'
+              value={jobDescription}
+              onChange={handleJobInput}
+              className='form-textarea'
+              rows='4'
+              maxLength='1000'
+            />
+          </div>
+          {/* notes */}
+          <div className='form-row'>
+            <label htmlFor='notes' className='form-label'>
+              notes
+            </label>
+            <textarea
+              name='notes'
+              value={notes}
+              onChange={handleJobInput}
+              className='form-textarea'
+              rows='3'
+              maxLength='500'
+            />
+          </div>
+
           {/* btn container */}
           <div className='btn-container'>
             <button
