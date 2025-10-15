@@ -37,6 +37,23 @@ const UserSchema = new mongoose.Schema({
     maxlength: 20,
     default: 'my city',
   },
+  // Resume storage fields (Cloudinary)
+  resumeUrl: {
+    type: String,
+    default: null,
+  },
+  resumePublicId: {
+    type: String,
+    default: null,
+  },
+  resumeFileName: {
+    type: String,
+    default: null,
+  },
+  resumeUploadDate: {
+    type: Date,
+    default: null,
+  },
 })
 
 UserSchema.pre('save', async function () {
