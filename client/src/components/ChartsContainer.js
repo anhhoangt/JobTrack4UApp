@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { FaChartBar, FaChartArea } from 'react-icons/fa'
 
 import BarChart from './BarChart'
 import AreaChart from './AreaChart'
@@ -11,8 +12,16 @@ const ChartsContainer = () => {
   return (
     <Wrapper>
       <h4>Monthly Applications</h4>
-      <button type='button' onClick={() => setBarChart(!barChart)}>
-        {barChart ? 'Area Chart' : 'Bar Chart'}
+      <button type='button' className='chart-toggle-btn' onClick={() => setBarChart(!barChart)}>
+        {barChart ? (
+          <>
+            <FaChartArea /> Switch to Area Chart
+          </>
+        ) : (
+          <>
+            <FaChartBar /> Switch to Bar Chart
+          </>
+        )}
       </button>
       {barChart ? <BarChart data={data} /> : <AreaChart data={data} />}
     </Wrapper>

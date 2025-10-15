@@ -43,7 +43,7 @@ const Wrapper = styled.nav`
     position: absolute;
     top: 40px;
     left: 0;
-    width: 100%;
+    width: 50%;
     background: var(--primary-100);
     box-shadow: var(--shadow-2);
     padding: 0.5rem;
@@ -61,6 +61,14 @@ const Wrapper = styled.nav`
     letter-spacing: var(--letterSpacing);
     text-transform: capitalize;
     cursor: pointer;
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0;
+    text-decoration: none;
+  }
+  .dropdown-btn:hover {
+    background: var(--primary-200);
+    border-radius: var(--borderRadius);
   }
   .logo-text {
     display: none;
