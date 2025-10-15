@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useAppContext } from '../../context/appContext';
 import { Loading, Alert } from '../../components';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
+import '../../assets/css/activities.css';
 
 /**
  * =====================================================
@@ -167,7 +168,6 @@ const Activities = () => {
  */
 const ActivityCard = ({ activity, onMarkComplete, onDelete }) => {
     const {
-        _id,
         type,
         title,
         description,
