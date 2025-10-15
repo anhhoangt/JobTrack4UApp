@@ -380,6 +380,16 @@
   font-weight: 500;
 }
 
+.edit-btn {
+  background: var(--primary-100);
+  color: var(--primary-700);
+}
+
+.edit-btn:hover {
+  background: var(--primary-500);
+  color: var(--white);
+}
+
 .complete-btn {
   background: var(--green-light);
   color: var(--green-dark);
@@ -434,6 +444,14 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.4;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .template-btn:hover {

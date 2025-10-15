@@ -44,6 +44,9 @@ import {
   MARK_ACTIVITY_COMPLETE_BEGIN,
   MARK_ACTIVITY_COMPLETE_SUCCESS,
   MARK_ACTIVITY_COMPLETE_ERROR,
+  MARK_ACTIVITY_INCOMPLETE_BEGIN,
+  MARK_ACTIVITY_INCOMPLETE_SUCCESS,
+  MARK_ACTIVITY_INCOMPLETE_ERROR,
   GET_TIMELINE_ACTIVITIES_BEGIN,
   GET_TIMELINE_ACTIVITIES_SUCCESS,
   GET_TIMELINE_ACTIVITIES_ERROR,
@@ -445,6 +448,28 @@ const reducer = (state, action) => {
     };
   }
   if (action.type === MARK_ACTIVITY_COMPLETE_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === MARK_ACTIVITY_INCOMPLETE_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === MARK_ACTIVITY_INCOMPLETE_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'Activity Marked as Pending!',
+    };
+  }
+  if (action.type === MARK_ACTIVITY_INCOMPLETE_ERROR) {
     return {
       ...state,
       isLoading: false,

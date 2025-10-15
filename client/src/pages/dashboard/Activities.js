@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useAppContext } from '../../context/appContext';
 import { Loading, Alert } from '../../components';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/css/activities.css';
 
 /**
@@ -37,6 +38,7 @@ const Activities = () => {
         handleActivityChange,
         clearActivityFilters,
         markActivityComplete,
+        markActivityIncomplete,
         deleteActivity,
     } = useAppContext();
 
@@ -61,7 +63,12 @@ const Activities = () => {
     return (
         <Wrapper>
             <form className='form'>
-                <h3>Activity Management</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <h3>Activity Management</h3>
+                    <Link to='/add-activity' className='btn'>
+                        Create Activity
+                    </Link>
+                </div>
                 {showAlert && <Alert />}
 
                 {/* Activity Filters Section */}
@@ -142,6 +149,7 @@ const Activities = () => {
                                     key={activity._id}
                                     activity={activity}
                                     onMarkComplete={() => markActivityComplete(activity._id)}
+                                    onMarkIncomplete={() => markActivityIncomplete(activity._id)}
                                     onDelete={() => deleteActivity(activity._id)}
                                 />
                             ))}
@@ -166,8 +174,12 @@ const Activities = () => {
  * Displays individual activity information in a card format
  * with quick action buttons for common operations.
  */
-const ActivityCard = ({ activity, onMarkComplete, onDelete }) => {
+const ActivityCard = ({ activity, onMarkComplete, onMarkIncomplete, onDelete }) => {
+    const { setEditActivity } = useAppContext();
+    const navigate = useNavigate();
+
     const {
+        _id,
         type,
         title,
         description,
@@ -241,13 +253,32 @@ const ActivityCard = ({ activity, onMarkComplete, onDelete }) => {
             </div>
 
             <footer className='activity-actions'>
-                {!isCompleted && (
+                <button
+                    type='button'
+                    className='btn action-btn edit-btn'
+                    onClick={() => {
+                        setEditActivity(_id);
+                        navigate('/add-activity');
+                    }}
+                >
+                    Edit
+                </button>
+                {!isCompleted ? (
                     <button
                         type='button'
                         className='btn action-btn complete-btn'
                         onClick={onMarkComplete}
                     >
                         Mark Complete
+                    </button>
+                ) : (
+                    <button
+                        type='button'
+                        className='btn action-btn'
+                        style={{ background: '#fef3c7', color: '#92400e' }}
+                        onClick={onMarkIncomplete}
+                    >
+                        Mark as Pending
                     </button>
                 )}
                 <button

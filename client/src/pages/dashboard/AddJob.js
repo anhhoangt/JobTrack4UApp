@@ -57,6 +57,10 @@ const AddJob = () => {
       return
     }
     createJob()
+    // Redirect to all jobs page after creating
+    setTimeout(() => {
+      navigate('/all-jobs')
+    }, 1500)
   }
   const handleJobInput = (e) => {
     const name = e.target.name

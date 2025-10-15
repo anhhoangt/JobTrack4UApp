@@ -52,6 +52,9 @@ import {
   MARK_ACTIVITY_COMPLETE_BEGIN,
   MARK_ACTIVITY_COMPLETE_SUCCESS,
   MARK_ACTIVITY_COMPLETE_ERROR,
+  MARK_ACTIVITY_INCOMPLETE_BEGIN,
+  MARK_ACTIVITY_INCOMPLETE_SUCCESS,
+  MARK_ACTIVITY_INCOMPLETE_ERROR,
   GET_TIMELINE_ACTIVITIES_BEGIN,
   GET_TIMELINE_ACTIVITIES_SUCCESS,
   GET_TIMELINE_ACTIVITIES_ERROR,
@@ -589,12 +592,48 @@ const AppProvider = ({ children }) => {
         type: MARK_ACTIVITY_COMPLETE_SUCCESS,
       });
 
+      // Reset filter to 'all' to ensure completed activity remains visible
+      dispatch({
+        type: HANDLE_ACTIVITY_CHANGE,
+        payload: { name: 'activityStatus', value: 'all' }
+      });
+
       // Refresh activities list
       getActivities();
     } catch (error) {
       if (error.response.status === 401) return;
       dispatch({
         type: MARK_ACTIVITY_COMPLETE_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  /**
+   * Mark activity as incomplete (pending)
+   */
+  const markActivityIncomplete = async (activityId) => {
+    dispatch({ type: MARK_ACTIVITY_INCOMPLETE_BEGIN });
+    try {
+      await authFetch.patch(`/activities/${activityId}/incomplete`);
+
+      dispatch({
+        type: MARK_ACTIVITY_INCOMPLETE_SUCCESS,
+      });
+
+      // Reset filter to 'all' to ensure activity remains visible
+      dispatch({
+        type: HANDLE_ACTIVITY_CHANGE,
+        payload: { name: 'activityStatus', value: 'all' }
+      });
+
+      // Refresh activities list
+      getActivities();
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: MARK_ACTIVITY_INCOMPLETE_ERROR,
         payload: { msg: error.response.data.msg },
       });
     }
@@ -797,6 +836,7 @@ const AppProvider = ({ children }) => {
         getTimelineActivities,
         createActivity,
         markActivityComplete,
+        markActivityIncomplete,
         deleteActivity,
         handleActivityChange,
         clearActivityFilters,

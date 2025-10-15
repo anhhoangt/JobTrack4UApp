@@ -13,6 +13,7 @@ import {
   AddJob,       // Job creation and editing form
   Activities,   // Activity management page (Phase 3)
   Timeline,     // Timeline view page (Phase 3)
+  AddActivity,  // Add/Edit activity form (Phase 3)
 } from './pages/dashboard'
 
 /**
@@ -105,6 +106,18 @@ function App() {
             - Create, edit, and delete activities
           */}
           <Route path='activities' element={<Activities />} />
+
+          {/*
+            ADD/EDIT ACTIVITY PAGE (/add-activity) - Phase 3
+            Comprehensive form for creating new activities or editing existing ones.
+            Features include:
+            - Job selection dropdown
+            - Activity type and priority selection
+            - Contact person information
+            - Quick templates for common activities
+            - Scheduled and reminder dates
+          */}
+          <Route path='add-activity' element={<AddActivity />} />
 
           {/*
             TIMELINE PAGE (/timeline) - Phase 3

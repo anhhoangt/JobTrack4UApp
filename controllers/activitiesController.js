@@ -321,6 +321,43 @@ const markActivityComplete = async (req, res) => {
     res.status(StatusCodes.OK).json({ activity: updatedActivity })
 }
 
+/**
+ * MARK ACTIVITY AS PENDING (INCOMPLETE)
+ *
+ * Marks a completed activity back to pending status and clears the completion date.
+ * Useful for when activities are marked complete by mistake or need to be reopened.
+ *
+ * @route PATCH /api/v1/activities/:id/incomplete
+ * @access Private
+ * @param {String} req.params.id - Activity ID
+ * @returns {Object} Updated activity marked as pending
+ */
+const markActivityIncomplete = async (req, res) => {
+    const { id: activityId } = req.params
+
+    // Security Check: Verify activity exists and belongs to user
+    const activity = await Activity.findOne({
+        _id: activityId,
+        createdBy: req.user.userId,
+    })
+
+    if (!activity) {
+        throw new NotFoundError(`No activity with id: ${activityId}`)
+    }
+
+    // Update activity to pending status and clear completion date
+    const updatedActivity = await Activity.findOneAndUpdate(
+        { _id: activityId, createdBy: req.user.userId },
+        {
+            isCompleted: false,
+            completedDate: null // Clear the completion date
+        },
+        { new: true, runValidators: true }
+    ).populate('jobId', 'position company status')
+
+    res.status(StatusCodes.OK).json({ activity: updatedActivity })
+}
+
 // Export all controller functions for use in routes
 export {
     createActivity,
@@ -331,4 +368,5 @@ export {
     getJobTimeline,
     getUpcomingActivities,
     markActivityComplete,
+    markActivityIncomplete,
 }

@@ -70,37 +70,70 @@ const AddActivity = () => {
 
   const priorityOptions = ['low', 'medium', 'high'];
 
-  // Activity templates for quick creation
+  // Comprehensive activity templates for quick creation
   const activityTemplates = {
     'application-sent': {
       title: 'Application Submitted',
-      description: 'Successfully submitted job application',
+      description: 'Successfully submitted job application through company website',
       type: 'application-sent',
       priority: 'medium'
     },
     'follow-up-email': {
       title: 'Follow-up Email',
-      description: 'Send follow-up email to check application status',
+      description: 'Send follow-up email to check application status after 2 weeks',
       type: 'email-sent',
       priority: 'medium'
     },
+    'phone-screening': {
+      title: 'Phone Screening Call',
+      description: 'Initial phone screening with recruiter - 30 minute call',
+      type: 'phone-call-received',
+      priority: 'high'
+    },
+    'technical-interview': {
+      title: 'Technical Interview',
+      description: 'Technical interview focusing on coding and system design',
+      type: 'interview-scheduled',
+      priority: 'high'
+    },
     'interview-prep': {
       title: 'Interview Preparation',
-      description: 'Research company and prepare for interview questions',
+      description: 'Research company culture, prepare answers for common questions, review technical concepts',
       type: 'other',
       priority: 'high'
     },
     'thank-you-note': {
-      title: 'Thank You Email',
-      description: 'Send thank you email after interview',
+      title: 'Send Thank You Email',
+      description: 'Send thank you email to interviewer within 24 hours',
       type: 'email-sent',
+      priority: 'high'
+    },
+    'networking-call': {
+      title: 'Networking Call',
+      description: 'Connect with employee for informational interview',
+      type: 'phone-call-made',
       priority: 'medium'
+    },
+    'offer-received': {
+      title: 'Job Offer Received',
+      description: 'Received formal job offer - review compensation and benefits',
+      type: 'offer-received',
+      priority: 'high'
     }
   };
 
   // Load jobs on component mount
   useEffect(() => {
     getJobs();
+  }, []);
+
+  // Clear form when component mounts (unless editing)
+  useEffect(() => {
+    if (!isEditingActivity) {
+      clearActivityValues();
+      setShowContactFields(false);
+      setSelectedTemplate('');
+    }
   }, []);
 
   const handleJobInput = (e) => {
@@ -143,8 +176,16 @@ const AddActivity = () => {
 
     if (isEditingActivity) {
       updateActivity(editActivityId, activityData);
+      // Redirect to activities page after editing
+      setTimeout(() => {
+        navigate('/activities');
+      }, 1500);
     } else {
       createActivity(activityData);
+      // Redirect to activities page after creating
+      setTimeout(() => {
+        navigate('/activities');
+      }, 1500);
     }
   };
 
@@ -355,7 +396,10 @@ const AddActivity = () => {
             <button
               type='button'
               className='btn btn-block cancel-btn'
-              onClick={() => navigate('/activities')}
+              onClick={() => {
+                clearActivityValues();
+                navigate('/activities');
+              }}
               disabled={isLoading}
             >
               Cancel
