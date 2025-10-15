@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/appContext';
-import { Loading, Alert, FormRow, FormRowSelect } from '../../components';
+import { Alert, FormRow, FormRowSelect } from '../../components';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 import { useNavigate } from 'react-router-dom';
+import '../../assets/css/activities.css';
 
 /**
  * =====================================================

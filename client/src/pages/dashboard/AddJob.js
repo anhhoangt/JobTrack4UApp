@@ -1,8 +1,10 @@
 import { FormRow, FormRowSelect, Alert } from '../../components'
 import { useAppContext } from '../../context/appContext'
 import Wrapper from '../../assets/wrappers/DashboardFormPage'
+import { useNavigate } from 'react-router-dom'
 
 const AddJob = () => {
+  const navigate = useNavigate()
   const {
     isLoading,
     isEditing,
@@ -48,6 +50,10 @@ const AddJob = () => {
     }
     if (isEditing) {
       editJob()
+      // Redirect to all jobs page after editing
+      setTimeout(() => {
+        navigate('/all-jobs')
+      }, 1500)
       return
     }
     createJob()

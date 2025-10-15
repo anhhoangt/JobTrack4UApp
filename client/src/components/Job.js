@@ -68,6 +68,17 @@ const Job = ({
     ).join(' ');
   };
 
+  // Ensure URL has proper protocol
+  const formatUrl = (url) => {
+    if (!url) return '';
+    // Check if URL already has a protocol
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    // Add https:// by default
+    return `https://${url}`;
+  };
+
   return (
     <Wrapper>
       <header>
@@ -76,7 +87,7 @@ const Job = ({
           <h5>{position}</h5>
           <p>{company}</p>
           {/* Priority indicator */}
-          {priority && priority !== 'medium' && (
+          {priority && (
             <div className={`priority-badge priority-${priority}`}>
               <FaFlag /> {priority.toUpperCase()}
             </div>
@@ -113,7 +124,7 @@ const Job = ({
               icon={<FaExternalLinkAlt />}
               text={
                 <a
-                  href={jobPostingUrl}
+                  href={formatUrl(jobPostingUrl)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="job-link"

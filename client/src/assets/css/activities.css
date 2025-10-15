@@ -412,7 +412,208 @@
   font-weight: 500;
 }
 
+/* ======== ADD ACTIVITY FORM STYLES ======== */
+
+/* Template Buttons Section */
+.template-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.template-btn {
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 100%);
+  color: var(--primary-600);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.template-btn:hover {
+  background: linear-gradient(135deg, var(--primary-200) 0%, var(--primary-300) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.template-btn.active {
+  background: var(--primary-500);
+  color: var(--white);
+  border-color: var(--primary-600);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.template-btn.clear-template {
+  background: linear-gradient(135deg, var(--grey-100) 0%, var(--grey-200) 100%);
+  color: var(--grey-600);
+}
+
+.template-btn.clear-template:hover {
+  background: linear-gradient(135deg, var(--red-light) 0%, var(--red-light) 100%);
+  color: var(--red-dark);
+}
+
+/* Form Textarea Styling */
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--grey-300);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.char-counter {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--grey-500);
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+/* Contact Fields Section */
+.contact-fields {
+  background: var(--grey-50);
+  border: 1px solid var(--grey-200);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  grid-column: 1 / -1;
+}
+
+.contact-fields h5 {
+  color: var(--grey-700);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-500);
+}
+
+/* Form Row Enhancements */
+.form-row input[type="checkbox"] {
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+
+.form-row label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Button Container */
+.btn-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+  grid-column: 1 / -1;
+}
+
+.submit-btn {
+  background: var(--primary-500);
+  color: var(--white);
+  border: none;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: var(--primary-700);
+  box-shadow: var(--shadow-3);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.clear-btn {
+  background: var(--grey-100);
+  color: var(--grey-700);
+  border: 2px solid var(--grey-300);
+}
+
+.clear-btn:hover:not(:disabled) {
+  background: var(--grey-200);
+  border-color: var(--grey-400);
+}
+
+.cancel-btn {
+  background: transparent;
+  color: var(--grey-600);
+  border: 2px solid var(--grey-300);
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: var(--grey-100);
+  border-color: var(--grey-400);
+  color: var(--grey-700);
+}
+
+/* Form Validation Styles */
+.form-row.error input,
+.form-row.error select,
+.form-row.error textarea {
+  border-color: var(--red-dark);
+}
+
+.form-row.error .form-label {
+  color: var(--red-dark);
+}
+
+.error-message {
+  color: var(--red-dark);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Date Input Enhancements */
+input[type="datetime-local"],
+input[type="date"],
+input[type="time"] {
+  cursor: pointer;
+}
+
+/* Required Field Indicator */
+.form-label::after {
+  content: '';
+}
+
+.form-row label:has(+ input[required])::after,
+.form-row label:has(+ select[required])::after {
+  content: ' *';
+  color: var(--red-dark);
+  font-weight: bold;
+}
+
 /* ======== RESPONSIVE DESIGN ======== */
+
+@media (min-width: 992px) {
+  .btn-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .template-buttons {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
 @media (max-width: 768px) {
   .info-message {
@@ -444,5 +645,31 @@
 
   .preview-icon {
     align-self: center;
+  }
+
+  .template-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-header {
+    flex-direction: column;
+  }
+
+  .activity-status {
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .activity-actions {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+
+  .contact-fields {
+    padding: 1rem;
   }
 }
