@@ -5,9 +5,6 @@ import Wrapper from '../assets/wrappers/PageBtnContainer'
 const PageBtnContainer = () => {
   const { numOfPages, page, changePage } = useAppContext()
 
-  const pages = Array.from({ length: numOfPages }, (_, index) => {
-    return index + 1
-  })
   const nextPage = () => {
     let newPage = page + 1
     if (newPage > numOfPages) {
@@ -15,6 +12,7 @@ const PageBtnContainer = () => {
     }
     changePage(newPage)
   }
+
   const prevPage = () => {
     let newPage = page - 1
     if (newPage < 1) {
@@ -22,9 +20,32 @@ const PageBtnContainer = () => {
     }
     changePage(newPage)
   }
+
+  // Generate compact page numbers: prev, current, next
+  const generatePageNumbers = () => {
+    const pages = []
+
+    // Add previous page if not on first page
+    if (page > 1) {
+      pages.push(page - 1)
+    }
+
+    // Always add current page
+    pages.push(page)
+
+    // Add next page if not on last page
+    if (page < numOfPages) {
+      pages.push(page + 1)
+    }
+
+    return pages
+  }
+
+  const pages = generatePageNumbers()
+
   return (
     <Wrapper>
-      <button className='prev-btn' onClick={prevPage}>
+      <button className='prev-btn' onClick={prevPage} disabled={page === 1}>
         <HiChevronDoubleLeft />
         prev
       </button>
@@ -42,7 +63,7 @@ const PageBtnContainer = () => {
           )
         })}
       </div>
-      <button className='next-btn' onClick={nextPage}>
+      <button className='next-btn' onClick={nextPage} disabled={page === numOfPages}>
         next
         <HiChevronDoubleRight />
       </button>
