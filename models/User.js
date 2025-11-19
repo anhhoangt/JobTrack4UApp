@@ -37,7 +37,48 @@ const UserSchema = new mongoose.Schema({
     maxlength: 20,
     default: 'my city',
   },
-  // Resume storage fields (Cloudinary)
+  // Multiple Resume storage (array of resume objects)
+  resumes: [{
+    fileName: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+    publicId: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      enum: [
+        'software-engineering',
+        'data-science',
+        'product-management',
+        'design',
+        'marketing',
+        'sales',
+        'operations',
+        'finance',
+        'hr',
+        'consulting',
+        'general',
+        'other'
+      ],
+      default: 'general',
+    },
+    uploadDate: {
+      type: Date,
+      default: Date.now,
+    },
+    isDefault: {
+      type: Boolean,
+      default: false,
+    },
+  }],
+  // Legacy resume fields (for backward compatibility - deprecated)
   resumeUrl: {
     type: String,
     default: null,

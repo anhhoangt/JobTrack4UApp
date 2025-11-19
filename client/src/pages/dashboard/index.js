@@ -7,6 +7,11 @@ import Stats from './Stats'
 import Activities from './Activities'
 import Timeline from './Timeline'
 import AddActivity from './AddActivity'
+// Advanced Analytics
+import AdvancedStats from './AdvancedStats'
+// Templates
+import Templates from './Templates'
+import AddTemplate from './AddTemplate'
 
 export {
   AllJobs,
@@ -17,5 +22,10 @@ export {
   // Phase 3 exports
   Activities,
   Timeline,
-  AddActivity
+  AddActivity,
+  // Advanced Analytics
+  AdvancedStats,
+  // Templates
+  Templates,
+  AddTemplate
 }

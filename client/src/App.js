@@ -14,6 +14,9 @@ import {
   Activities,   // Activity management page (Phase 3)
   Timeline,     // Timeline view page (Phase 3)
   AddActivity,  // Add/Edit activity form (Phase 3)
+  AdvancedStats, // Advanced analytics dashboard
+  Templates,    // Email & Cover Letter templates
+  AddTemplate,  // Add/Edit template form
 } from './pages/dashboard'
 
 /**
@@ -77,6 +80,17 @@ function App() {
           <Route index element={<Stats />} />
 
           {/*
+            ADVANCED ANALYTICS PAGE (/advanced-analytics)
+            Comprehensive analytics dashboard with:
+            - Response rate and success metrics
+            - Application velocity tracking
+            - Conversion funnel visualization
+            - Category performance breakdown
+            - Job type distribution analysis
+          */}
+          <Route path='advanced-analytics' element={<AdvancedStats />} />
+
+          {/*
             ALL JOBS PAGE (/all-jobs)
             Displays paginated list of all job applications with:
             - Search functionality (by company/position)
@@ -128,6 +142,28 @@ function App() {
             - Upcoming activity highlights
           */}
           <Route path='timeline' element={<Timeline />} />
+
+          {/*
+            TEMPLATES PAGE (/templates)
+            Email & Cover Letter template management featuring:
+            - Create reusable templates with variable substitution
+            - Filter templates by type (cover letter, email, follow-up, etc.)
+            - Favorite templates for quick access
+            - Preview templates with sample data
+            - Duplicate and edit existing templates
+          */}
+          <Route path='templates' element={<Templates />} />
+
+          {/*
+            ADD/EDIT TEMPLATE PAGE (/add-template)
+            Template creation and editing form with:
+            - Template name and type selection
+            - Email subject line (for email templates)
+            - Rich text content editor with variable insertion
+            - Available variables helper (click to insert)
+            - Character count and validation
+          */}
+          <Route path='add-template' element={<AddTemplate />} />
 
           {/*
             USER PROFILE PAGE (/profile)

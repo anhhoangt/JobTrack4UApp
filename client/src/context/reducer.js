@@ -24,6 +24,8 @@ import {
   EDIT_JOB_ERROR,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
+  GET_ADVANCED_ANALYTICS_BEGIN,
+  GET_ADVANCED_ANALYTICS_SUCCESS,
   CLEAR_FILTERS,
   CHANGE_PAGE,
   GET_CURRENT_USER_BEGIN,
@@ -318,6 +320,20 @@ const reducer = (state, action) => {
       isLoading: false,
       stats: action.payload.stats,
       monthlyApplications: action.payload.monthlyApplications,
+    };
+  }
+  if (action.type === GET_ADVANCED_ANALYTICS_BEGIN) {
+    return {
+      ...state,
+      isLoadingAnalytics: true,
+      showAlert: false,
+    };
+  }
+  if (action.type === GET_ADVANCED_ANALYTICS_SUCCESS) {
+    return {
+      ...state,
+      isLoadingAnalytics: false,
+      advancedAnalytics: action.payload.advancedAnalytics,
     };
   }
   if (action.type === CLEAR_FILTERS) {

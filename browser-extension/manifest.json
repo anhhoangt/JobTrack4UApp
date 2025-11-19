@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "JobTrack4U - Job Scraper",
+  "version": "1.0.0",
+  "description": "Automatically save job listings from LinkedIn, Indeed, Glassdoor and more to your JobTrack4U dashboard",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://localhost:*/*",
+    "https://*.linkedin.com/*",
+    "https://*.indeed.com/*",
+    "https://*.glassdoor.com/*",
+    "https://*.monster.com/*",
+    "https://*.ziprecruiter.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.linkedin.com/jobs/*",
+        "https://www.linkedin.com/jobs/*"
+      ],
+      "js": ["scrapers/linkedin.js"]
+    },
+    {
+      "matches": [
+        "https://*.indeed.com/viewjob*",
+        "https://*.indeed.com/rc/clk*"
+      ],
+      "js": ["scrapers/indeed.js"]
+    },
+    {
+      "matches": [
+        "https://*.glassdoor.com/job-listing/*",
+        "https://*.glassdoor.com/partner/jobListing*"
+      ],
+      "js": ["scrapers/glassdoor.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

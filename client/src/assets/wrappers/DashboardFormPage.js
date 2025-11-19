@@ -29,6 +29,16 @@ const Wrapper = styled.section`
     height: 35px;
     margin-top: 1rem;
   }
+
+  /* Disabled input styling - make it very obvious */
+  .form-input:disabled {
+    background-color: var(--grey-100);
+    color: var(--grey-500);
+    cursor: not-allowed;
+    border: 2px solid var(--grey-300);
+    opacity: 0.7;
+  }
+
   .btn-container {
     display: grid;
     grid-template-columns: 1fr 1fr;

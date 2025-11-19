@@ -32,6 +32,8 @@ import {
   EDIT_JOB_ERROR,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
+  GET_ADVANCED_ANALYTICS_BEGIN,
+  GET_ADVANCED_ANALYTICS_SUCCESS,
   CLEAR_FILTERS,
   CHANGE_PAGE,
   GET_CURRENT_USER_BEGIN,
@@ -148,6 +150,10 @@ const initialState = {
   // ======== STATISTICS & ANALYTICS ========
   stats: {},
   monthlyApplications: [],
+
+  // Advanced Analytics State
+  advancedAnalytics: null,
+  isLoadingAnalytics: false,
 
   // ======== PHASE 3: ACTIVITY MANAGEMENT STATE ========
   activities: [],
@@ -471,6 +477,20 @@ const AppProvider = ({ children }) => {
           stats: data.defaultStats,
           monthlyApplications: data.monthlyApplications,
         },
+      });
+    } catch (error) {
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  const getAdvancedAnalytics = async () => {
+    dispatch({ type: GET_ADVANCED_ANALYTICS_BEGIN });
+    try {
+      const { data } = await authFetch('/jobs/advanced-analytics');
+      dispatch({
+        type: GET_ADVANCED_ANALYTICS_SUCCESS,
+        payload: { advancedAnalytics: data },
       });
     } catch (error) {
       logoutUser();
@@ -829,6 +849,7 @@ const AppProvider = ({ children }) => {
         deleteJob,
         editJob,
         showStats,
+        getAdvancedAnalytics,
         clearFilters,
         changePage,
         // Phase 3: Activity Management Functions

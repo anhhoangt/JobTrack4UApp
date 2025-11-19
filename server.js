@@ -22,6 +22,8 @@ import authRouter from "./routes/authRoutes.js";
 import jobsRouter from "./routes/jobsRoutes.js";
 import activitiesRouter from "./routes/activitiesRoutes.js";
 import resumeRouter from "./routes/resumeRoutes.js";
+import templateRouter from "./routes/templateRoutes.js";
+import aiRouter from "./routes/aiRoutes.js";
 
 // middleware
 import notFoundMiddleware from "./middleware/not-found.js";
@@ -47,6 +49,8 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use("/api/v1/activities", authenticateUser, activitiesRouter);
 app.use("/api/v1/resume", authenticateUser, resumeRouter);
+app.use("/api/v1/templates", authenticateUser, templateRouter);
+app.use("/api/v1/ai", authenticateUser, aiRouter);
 
 // only when ready to deploy
 app.get("*", (req, res) => {
