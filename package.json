@@ -41,7 +41,7 @@
     "mongoose": "^6.0.13",
     "morgan": "^1.10.0",
     "multer": "^2.0.2",
-    "multer-storage-cloudinary": "^2.2.1",
+    "multer-storage-cloudinary": "^3.0.1",
     "openai": "^6.9.1",
     "pdf-parse": "^2.4.5",
     "validator": "^13.7.0",
