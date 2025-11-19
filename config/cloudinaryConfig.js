@@ -12,13 +12,16 @@
  * - CDN delivery
  */
 
-import { v2 as cloudinary } from 'cloudinary';
+import cloudinaryModule from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
 import dotenv from 'dotenv';
 
 // Load environment variables
 dotenv.config();
+
+// Get the v2 API from cloudinary
+const cloudinary = cloudinaryModule.v2;
 
 // Log to verify credentials are loaded (remove in production)
 // console.log('Cloudinary Config:');
@@ -28,18 +31,18 @@ dotenv.config();
 
 // Configure Cloudinary with environment variables
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 /**
  * CLOUDINARY STORAGE CONFIGURATION
  *
- * Simple configuration for Cloudinary storage
+ * Pass the full cloudinary module (not just v2) to CloudinaryStorage
  */
 const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
+    cloudinary: cloudinaryModule,
     params: {
         folder: 'jobtrack-resumes',
         resource_type: 'raw',
