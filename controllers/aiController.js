@@ -14,6 +14,9 @@
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError } from '../errors/index.js';
 import aiService from '../services/aiService.js';
+import { extractTextFromFile } from '../utils/fileParser.js';
+import { fetchJobDescriptionFromURL } from '../utils/jobDescriptionScraper.js';
+import fs from 'fs';
 
 /**
  * TAILOR RESUME
@@ -36,6 +39,7 @@ const tailorResume = async (req, res) => {
         res.status(StatusCodes.OK).json({
             msg: 'Resume tailored successfully',
             tailoredResume,
+            aiRemainingRequests: req.aiRemainingRequests,
         });
     } catch (error) {
         console.error('AI Error:', error);
@@ -64,6 +68,7 @@ const generateEmailResponse = async (req, res) => {
         res.status(StatusCodes.OK).json({
             msg: 'Email response generated successfully',
             emailResponse,
+            aiRemainingRequests: req.aiRemainingRequests,
         });
     } catch (error) {
         console.error('AI Error:', error);
@@ -92,6 +97,7 @@ const generateInterviewPrep = async (req, res) => {
         res.status(StatusCodes.OK).json({
             msg: 'Interview preparation generated successfully',
             interviewPrep,
+            aiRemainingRequests: req.aiRemainingRequests,
         });
     } catch (error) {
         console.error('AI Error:', error);
@@ -120,6 +126,7 @@ const analyzeResume = async (req, res) => {
         res.status(StatusCodes.OK).json({
             msg: 'Resume analyzed successfully',
             analysis,
+            aiRemainingRequests: req.aiRemainingRequests,
         });
     } catch (error) {
         console.error('AI Error:', error);
@@ -148,10 +155,82 @@ const generateCoverLetter = async (req, res) => {
         res.status(StatusCodes.OK).json({
             msg: 'Cover letter generated successfully',
             coverLetter,
+            aiRemainingRequests: req.aiRemainingRequests,
         });
     } catch (error) {
         console.error('AI Error:', error);
         throw new BadRequestError('Failed to generate cover letter. Please check your OpenAI API key.');
+    }
+};
+
+/**
+ * PARSE RESUME FILE
+ *
+ * Extracts text from uploaded resume file (PDF, DOCX, TXT)
+ *
+ * @route POST /api/v1/ai/parse-resume
+ * @access Private
+ */
+const parseResumeFile = async (req, res) => {
+    try {
+        if (!req.file) {
+            throw new BadRequestError('Please upload a file');
+        }
+
+        const resumeText = await extractTextFromFile(req.file);
+
+        // Clean up the uploaded file ONLY if it's a local file (not Cloudinary URL)
+        if (req.file.path && !req.file.path.startsWith('http')) {
+            try {
+                fs.unlinkSync(req.file.path);
+            } catch (unlinkError) {
+                console.log('Could not delete local file:', unlinkError.message);
+            }
+        }
+
+        res.status(StatusCodes.OK).json({
+            msg: 'Resume parsed successfully',
+            resumeText,
+        });
+    } catch (error) {
+        // Clean up file if it exists and is local
+        if (req.file && req.file.path && !req.file.path.startsWith('http')) {
+            try {
+                fs.unlinkSync(req.file.path);
+            } catch (unlinkError) {
+                console.log('Could not delete local file:', unlinkError.message);
+            }
+        }
+        console.error('Parse Error:', error);
+        throw new BadRequestError(error.message || 'Failed to parse resume file');
+    }
+};
+
+/**
+ * FETCH JOB DESCRIPTION FROM URL
+ *
+ * Fetches and extracts job description from URL
+ *
+ * @route POST /api/v1/ai/fetch-job-description
+ * @access Private
+ */
+const fetchJobDescription = async (req, res) => {
+    const { url } = req.body;
+
+    if (!url) {
+        throw new BadRequestError('Please provide a URL');
+    }
+
+    try {
+        const jobDescription = await fetchJobDescriptionFromURL(url);
+
+        res.status(StatusCodes.OK).json({
+            msg: 'Job description fetched successfully',
+            jobDescription,
+        });
+    } catch (error) {
+        console.error('Fetch Error:', error);
+        throw new BadRequestError(error.message || 'Failed to fetch job description from URL');
     }
 };
 
@@ -161,4 +240,6 @@ export {
     generateInterviewPrep,
     analyzeResume,
     generateCoverLetter,
+    parseResumeFile,
+    fetchJobDescription,
 };

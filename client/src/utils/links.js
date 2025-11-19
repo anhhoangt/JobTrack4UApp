@@ -1,6 +1,6 @@
 import { IoBarChartSharp } from 'react-icons/io5'
 import { MdQueryStats, MdTimeline } from 'react-icons/md'
-import { FaWpforms, FaTasks, FaChartBar, FaEnvelope } from 'react-icons/fa'
+import { FaWpforms, FaTasks, FaChartBar, FaEnvelope, FaRobot } from 'react-icons/fa'
 import { ImProfile } from 'react-icons/im'
 
 /**
@@ -13,6 +13,7 @@ import { ImProfile } from 'react-icons/im'
  * Phase 3: Added activity management (activities, timeline)
  * Advanced Analytics: Comprehensive analytics dashboard
  * Templates: Email & Cover Letter templates
+ * AI Assistant: ChatGPT-powered job search assistant
  */
 const links = [
   { id: 1, text: 'stats', path: '/', icon: <IoBarChartSharp /> },
@@ -23,7 +24,8 @@ const links = [
   { id: 5, text: 'activities', path: 'activities', icon: <FaTasks /> },
   { id: 6, text: 'timeline', path: 'timeline', icon: <MdTimeline /> },
   { id: 7, text: 'templates', path: 'templates', icon: <FaEnvelope /> },
-  { id: 8, text: 'profile', path: 'profile', icon: <ImProfile /> },
+  { id: 8, text: 'AI assistant', path: 'ai-assistant', icon: <FaRobot /> },
+  { id: 9, text: 'profile', path: 'profile', icon: <ImProfile /> },
 ]
 
 export default links

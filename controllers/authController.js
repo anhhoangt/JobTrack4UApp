@@ -14,7 +14,13 @@ const register = async (req, res) => {
   if (userAlreadyExists) {
     throw new BadRequestError("Email already in use");
   }
-  const user = await User.create({ name, email, password });
+  const user = await User.create({ name, email, password, lastName, location });
+
+  // Set admin role if email matches the admin email from environment
+  if (email === process.env.ADMIN_EMAIL) {
+    user.role = 'admin';
+    await user.save();
+  }
 
   const token = user.createJWT();
   attachCookie({ res, token });

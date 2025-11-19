@@ -19,32 +19,39 @@ const createJob = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ job });
 };
 const getAllJobs = async (req, res) => {
-  const { status, jobType, sort, search, category, priority } = req.query;
+  const { search, status, jobType, sort, category, priority } = req.query;
+  const { userId, role } = req.user;
 
-  const queryObject = {
-    createdBy: req.user.userId,
-  };
+  const queryMatch = {};
+
+  // Admin can see all jobs, normal users see only their own
+  if (role !== 'admin') {
+    queryMatch.createdBy = userId;
+  }
+
+  // Add search functionality if search term is provided
+  if (search) {
+    queryMatch.position = { $regex: search, $options: 'i' };
+  }
+
   // add stuff based on condition
-
   if (status && status !== 'all') {
-    queryObject.status = status;
+    queryMatch.status = status;
   }
   if (jobType && jobType !== 'all') {
-    queryObject.jobType = jobType;
+    queryMatch.jobType = jobType;
   }
-  if (search) {
-    queryObject.position = { $regex: search, $options: 'i' };
-  }
+
   // Phase 2: Category and Priority filters
   if (category && category !== 'all') {
-    queryObject.category = category;
+    queryMatch.category = category;
   }
   if (priority && priority !== 'all') {
-    queryObject.priority = priority;
+    queryMatch.priority = priority;
   }
-  // NO AWAIT
 
-  let result = Job.find(queryObject);
+  // NO AWAIT
+  let result = Job.find(queryMatch);
 
   // chain sort conditions
 
@@ -72,7 +79,7 @@ const getAllJobs = async (req, res) => {
 
   const jobs = await result;
 
-  const totalJobs = await Job.countDocuments(queryObject);
+  const totalJobs = await Job.countDocuments(queryMatch);
   const numOfPages = Math.ceil(totalJobs / limit);
 
   res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages });
@@ -116,8 +123,13 @@ const deleteJob = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Success! Job removed' });
 };
 const showStats = async (req, res) => {
+  const { userId, role } = req.user;
+
+  // Build query - admin sees all, normal users see only their own
+  const userMatch = role === 'admin' ? {} : { createdBy: userId };
+
   let stats = await Job.aggregate([
-    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+    { $match: userMatch },
     { $group: { _id: '$status', count: { $sum: 1 } } },
   ]);
   stats = stats.reduce((acc, curr) => {
@@ -161,15 +173,18 @@ const showStats = async (req, res) => {
 };
 
 const getAdvancedAnalytics = async (req, res) => {
-  const userId = mongoose.Types.ObjectId(req.user.userId);
+  const { userId, role } = req.user;
+
+  // Build base query - admin sees all, normal users see only their own
+  const userMatch = role === 'admin' ? {} : { createdBy: mongoose.Types.ObjectId(userId) };
 
   // 1. Status Distribution (similar to existing stats but with percentages)
   const statusStats = await Job.aggregate([
-    { $match: { createdBy: userId } },
+    { $match: userMatch },
     { $group: { _id: '$status', count: { $sum: 1 } } },
   ]);
 
-  const totalJobs = await Job.countDocuments({ createdBy: userId });
+  const totalJobs = await Job.countDocuments(userMatch);
 
   const statusDistribution = {
     pending: 0,
@@ -203,7 +218,7 @@ const getAdvancedAnalytics = async (req, res) => {
   const weeklyApplications = await Job.aggregate([
     {
       $match: {
-        createdBy: userId,
+        ...userMatch,
         createdAt: { $gte: twelveWeeksAgo }
       }
     },
@@ -239,7 +254,7 @@ const getAdvancedAnalytics = async (req, res) => {
 
   // 5. Category Performance Breakdown
   const categoryStats = await Job.aggregate([
-    { $match: { createdBy: userId } },
+    { $match: userMatch },
     {
       $group: {
         _id: '$category',
@@ -269,7 +284,7 @@ const getAdvancedAnalytics = async (req, res) => {
 
   // 6. Priority Distribution
   const priorityStats = await Job.aggregate([
-    { $match: { createdBy: userId } },
+    { $match: userMatch },
     { $group: { _id: '$priority', count: { $sum: 1 } } },
   ]);
 
@@ -291,18 +306,18 @@ const getAdvancedAnalytics = async (req, res) => {
 
   const recentApplications = {
     last7Days: await Job.countDocuments({
-      createdBy: userId,
+      ...userMatch,
       createdAt: { $gte: last7Days }
     }),
     last30Days: await Job.countDocuments({
-      createdBy: userId,
+      ...userMatch,
       createdAt: { $gte: last30Days }
     })
   };
 
   // 8. Job Type Distribution
   const jobTypeStats = await Job.aggregate([
-    { $match: { createdBy: userId } },
+    { $match: userMatch },
     { $group: { _id: '$jobType', count: { $sum: 1 } } },
     { $sort: { count: -1 } }
   ]);
@@ -315,7 +330,7 @@ const getAdvancedAnalytics = async (req, res) => {
 
   // 9. Monthly Trend (last 6 months with more details)
   const monthlyTrend = await Job.aggregate([
-    { $match: { createdBy: userId } },
+    { $match: userMatch },
     {
       $group: {
         _id: {
@@ -381,46 +396,47 @@ const getAdvancedAnalytics = async (req, res) => {
  * @access Private
  */
 const quickAddJob = async (req, res) => {
-    const { userId } = req.user;
+  const { userId } = req.user;
 
-    // Extract and map fields from extension data
-    const {
-        company,
-        position,
-        jobLocation,
-        jobType,
-        status = 'pending',
-        jobUrl,
-        description,
-        salary,
-        postedDate,
-        source, // Which job board it came from
-    } = req.body;
+  // Extract and map fields from extension data
+  const {
+    company,
+    position,
+    jobLocation,
+    jobType,
+    status = 'pending',
+    jobUrl,
+    description,
+    salary,
+    postedDate,
+    source, // Which job board it came from
+  } = req.body;
 
-    if (!position || !company) {
-        throw new BadRequestError('Please provide position and company');
-    }
+  if (!position || !company) {
+    throw new BadRequestError('Please provide position and company');
+  }
 
-    // Create job with extension data
-    const job = await Job.create({
-        company,
-        position,
-        jobLocation: jobLocation || 'Remote',
-        status,
-        jobType: jobType || 'full-time',
-        createdBy: userId,
-        // Enhanced fields from scraper
-        jobUrl: jobUrl || '',
-        description: description || '',
-        salary: salary || '',
-        applicationDate: postedDate ? new Date(postedDate) : undefined,
-        notes: source ? `Added via browser extension from ${source}` : 'Added via browser extension',
-    });
+  // Create job with extension data
+  const job = await Job.create({
+    company,
+    position,
+    jobLocation: jobLocation || 'Remote',
+    status,
+    jobType: jobType || 'full-time',
+    createdBy: userId,
+    // Enhanced fields from scraper
+    jobUrl: jobUrl || '',
+    description: description || '',
+    salary: salary || '',
+    applicationDate: postedDate ? new Date(postedDate) : undefined,
+    notes: source ? `Added via browser extension from ${source}` : 'Added via browser extension',
+  });
 
-    res.status(StatusCodes.CREATED).json({
-        msg: 'Job added successfully from extension',
-        job
-    });
+  res.status(StatusCodes.CREATED).json({
+    msg: 'Job added successfully from extension',
+    job
+  });
 };
+
 
 export { createJob, deleteJob, getAllJobs, updateJob, showStats, getAdvancedAnalytics, quickAddJob };

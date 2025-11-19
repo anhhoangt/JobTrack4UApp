@@ -12,6 +12,8 @@ import AdvancedStats from './AdvancedStats'
 // Templates
 import Templates from './Templates'
 import AddTemplate from './AddTemplate'
+// AI Assistant
+import AIAssistant from './AIAssistant'
 
 export {
   AllJobs,
@@ -27,5 +29,7 @@ export {
   AdvancedStats,
   // Templates
   Templates,
-  AddTemplate
+  AddTemplate,
+  // AI Assistant
+  AIAssistant
 }

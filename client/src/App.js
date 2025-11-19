@@ -17,6 +17,7 @@ import {
   AdvancedStats, // Advanced analytics dashboard
   Templates,    // Email & Cover Letter templates
   AddTemplate,  // Add/Edit template form
+  AIAssistant,  // AI-powered assistant
 } from './pages/dashboard'
 
 /**
@@ -164,6 +165,18 @@ function App() {
             - Character count and validation
           */}
           <Route path='add-template' element={<AddTemplate />} />
+
+          {/*
+            AI ASSISTANT PAGE (/ai-assistant)
+            AI-powered job search assistant featuring:
+            - Resume Tailoring: ATS-optimized resume matching job descriptions
+            - Email Assistant: Professional email response generation
+            - Interview Prep: Questions & answers for job interviews
+            - Resume Analysis: Detailed feedback and ATS compatibility check
+            - Cover Letter Generator: Personalized cover letters
+            Powered by ChatGPT (OpenAI GPT-4)
+          */}
+          <Route path='ai-assistant' element={<AIAssistant />} />
 
           {/*
             USER PROFILE PAGE (/profile)

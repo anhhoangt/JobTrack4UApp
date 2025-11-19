@@ -41,7 +41,7 @@ INSTRUCTIONS:
 Return ONLY the tailored resume text in a clean, ATS-friendly format.`;
 
     const response = await openai.chat.completions.create({
-        model: 'gpt-4',
+        model: 'gpt-3.5-turbo',
         messages: [
             {
                 role: 'system',
@@ -81,7 +81,7 @@ INSTRUCTIONS:
 Generate a professional email response:`;
 
     const response = await openai.chat.completions.create({
-        model: 'gpt-4',
+        model: 'gpt-3.5-turbo',
         messages: [
             {
                 role: 'system',
@@ -133,7 +133,7 @@ Format the response as:
 [Specific advice for this role]`;
 
     const response = await openai.chat.completions.create({
-        model: 'gpt-4',
+        model: 'gpt-3.5-turbo',
         messages: [
             {
                 role: 'system',
@@ -172,7 +172,7 @@ Provide analysis covering:
 Be specific and actionable.`;
 
     const response = await openai.chat.completions.create({
-        model: 'gpt-4',
+        model: 'gpt-3.5-turbo',
         messages: [
             {
                 role: 'system',
@@ -216,7 +216,7 @@ INSTRUCTIONS:
 Generate the cover letter:`;
 
     const response = await openai.chat.completions.create({
-        model: 'gpt-4',
+        model: 'gpt-3.5-turbo',
         messages: [
             {
                 role: 'system',

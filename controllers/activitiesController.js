@@ -65,12 +65,11 @@ const createActivity = async (req, res) => {
  * @returns {Object} Paginated activities with metadata
  */
 const getAllActivities = async (req, res) => {
-    const { jobId, type, isCompleted, page = 1, limit = 20 } = req.query
+    const { jobId, type, isCompleted, page = 1, limit = 20 } = req.query;
+    const { userId, role } = req.user;
 
-    // Base query: only get activities created by the authenticated user
-    const queryObject = {
-        createdBy: req.user.userId,
-    }
+    // Build query - admin sees all, normal users see only their own
+    const queryObject = role === 'admin' ? {} : { createdBy: userId };
 
     // Apply optional filters based on query parameters
 
