@@ -4,6 +4,10 @@
   "description": "#### Track Your Job Search",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
   "scripts": {
     "install-dependencies": "npm run install-client && npm install",
     "setup-production": "npm run install-client && npm run build-client && npm install",
