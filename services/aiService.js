@@ -8,10 +8,12 @@
  */
 
 import OpenAI from 'openai';
+import fetch from 'node-fetch';
 
-// Initialize OpenAI client
+// Initialize OpenAI client with fetch polyfill for older Node.js versions
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
+    fetch: fetch, // Provide fetch for Node.js < 18
 });
 
 /**
