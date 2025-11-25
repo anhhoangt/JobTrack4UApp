@@ -20,7 +20,7 @@ const AIAssistant = () => {
     const [jobDescUrl, setJobDescUrl] = useState('');
     const [tailoredResume, setTailoredResume] = useState('');
 
-    // Email Assistant State
+    // Email Assistant State.
     const [emailContent, setEmailContent] = useState('');
     const [emailContext, setEmailContext] = useState('');
     const [emailResponse, setEmailResponse] = useState('');
