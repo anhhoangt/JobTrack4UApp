@@ -11,7 +11,7 @@ const AIAssistant = () => {
     const [alertText, setAlertText] = useState('');
     const [alertType, setAlertType] = useState('success');
 
-    // Resume Tailor State
+    // Resume Tailor State.
     const [resumeText, setResumeText] = useState('');
     const [resumeInputMethod, setResumeInputMethod] = useState('text'); // 'text' or 'file'
     const [resumeFile, setResumeFile] = useState(null);
