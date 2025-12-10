@@ -14,7 +14,8 @@ const register = async (req, res) => {
   if (userAlreadyExists) {
     throw new BadRequestError("Email already in use");
   }
-  const user = await User.create({ name, email, password, lastName, location });
+  const user = await User.create({ name, email, password, location });
+    // const user = await User.create({ name, email, password, lastName, location });
 
   // Set admin role if email matches the admin email from environment
   if (email === process.env.ADMIN_EMAIL) {
@@ -53,7 +54,7 @@ const register = async (req, res) => {
   res.status(StatusCodes.CREATED).json({
     user: {
       email: user.email,
-      lastName: user.lastName,
+      // lastName: user.lastName,
       location: user.location,
       name: user.name,
     },
@@ -82,15 +83,15 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, location: user.location });
 };
 const updateUser = async (req, res) => {
-  const { email, name, lastName, location } = req.body;
-  if (!email || !name || !lastName || !location) {
+  const { email, name, location } = req.body;
+  if (!email || !name  || !location) {
     throw new BadRequestError("Please provide all values");
   }
   const user = await User.findOne({ _id: req.user.userId });
 
   user.email = email;
   user.name = name;
-  user.lastName = lastName;
+  // user.lastName = lastName;
   user.location = location;
 
   await user.save();
