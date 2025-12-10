@@ -14,8 +14,7 @@ const register = async (req, res) => {
   if (userAlreadyExists) {
     throw new BadRequestError("Email already in use");
   }
-  const user = await User.create({ name, email, password, location });
-    // const user = await User.create({ name, email, password, lastName, location });
+  const user = await User.create({ name, email, password });
 
   // Set admin role if email matches the admin email from environment
   if (email === process.env.ADMIN_EMAIL) {
