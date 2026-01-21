@@ -7,7 +7,7 @@ The system now supports an admin user with elevated privileges to view all data 
 
 ## Admin User Setup..
 
-### Automatic Admin Assignment
+### Automatic Admin Assignment.
 - **Email**: `aaaa@gmail.com`
 - **Role**: Automatically set to `admin` when this email registers
 - All other users get `user` role by default
