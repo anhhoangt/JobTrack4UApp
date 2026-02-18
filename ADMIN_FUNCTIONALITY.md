@@ -5,7 +5,7 @@ The system now supports an admin user with elevated privileges to view all data 
 
 ---
 
-## Admin User Setup..................
+## Admin User Setup...................
 
 ### Automatic Admin Assignment.
 - **Email**: `aaaa@gmail.com`
